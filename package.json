@@ -1,0 +1,17 @@
+{
+  "name": "icg-staff-bot",
+  "version": "1.0.0",
+  "description": "Bot s propojením na Firestore",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "firebase-admin": "^12.0.0"
+  },
+  "engines": {
+    "node": "22.x"
+  }
+}
