@@ -4,26 +4,30 @@ const admin = require('firebase-admin');
 const app = express();
 app.use(express.json());
 
-const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
+const firebaseKeyRaw = process.env.FIREBASE_KEY;
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+if (!firebaseKeyRaw) {
+  console.error("CHYBA: V Renderu chybí proměnná FIREBASE_KEY!");
+  process.exit(1); 
+}
+
+try {
+  const serviceAccount = JSON.parse(firebaseKeyRaw);
+  
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount)
+  });
+
+  console.log("Firebase úspěšně inicializováno.");
+} catch (error) {
+  console.error("CHYBA při parsování JSONu v FIREBASE_KEY:", error.message);
+  process.exit(1);
+}
 
 const db = admin.firestore();
 
 app.get('/', (req, res) => {
-  res.send('Server běží a Firestore je připojen!');
-});
-
-app.get('/data', async (req, res) => {
-  try {
-    const snapshot = await db.collection('tvoje_kolekce').get();
-    const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    res.json(data);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+  res.send('ICG STAFF BOT běží!');
 });
 
 const PORT = process.env.PORT || 3000;
